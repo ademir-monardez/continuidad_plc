@@ -96,7 +96,7 @@ body {
 }
 
 main {
-  padding: 14px 4px 24px;
+  padding: 14px 18px 24px;
 }
 
 .equipment-panel {
@@ -152,37 +152,50 @@ main {
   background: #d72828;
 }
 
-.coils-grid {
+.cards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 15px;
 }
 
-.coil-card {
-  min-height: 236px;
-  padding: 30px 20px 26px;
+.coils-panel {
+  min-height: 430px;
+  padding: 26px 28px 18px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 5px;
 }
 
-.coil-card h2 {
-  margin: 0 0 56px;
+.coils-panel h2 {
+  margin: 0 0 30px;
   text-align: center;
-  font-size: 29px;
-  letter-spacing: 1px;
+  font-size: 34px;
+  font-weight: 500;
+}
+
+.coil-row {
+  display: grid;
+  grid-template-columns: 124px minmax(0, 1fr);
+  align-items: center;
+  min-height: 104px;
+}
+
+.coil-row strong {
+  font-size: 32px;
+  font-weight: 500;
 }
 
 .lights {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: clamp(46px, 8vw, 92px);
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
 }
 
 .light {
-  width: 88px;
-  height: 88px;
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
   background: radial-gradient(circle at 52% 48%, var(--gray-light) 0 8%, #9f9f9f 32%, var(--gray-dark) 76%);
   box-shadow: inset -10px -12px 18px rgba(55, 20, 20, 0.42);
@@ -202,6 +215,12 @@ main {
   margin: 16px 10px 0;
   color: var(--muted);
   font-size: 14px;
+}
+
+.empty-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 @media (max-width: 900px) {
@@ -228,11 +247,33 @@ main {
     padding: 20px;
   }
 
-  .coils-grid {
+  .cards-grid {
     grid-template-columns: 1fr;
   }
 
+  .coils-panel {
+    padding: 24px 24px 12px;
+  }
+
+  .coils-panel h2 {
+    font-size: 34px;
+  }
+
+  .coil-row {
+    grid-template-columns: 126px minmax(0, 1fr);
+    min-height: 108px;
+  }
+
+  .coil-row strong {
+    font-size: 32px;
+  }
+
   .lights {
-    justify-content: center;
+    gap: 28px;
+  }
+
+  .light {
+    width: 82px;
+    height: 82px;
   }
 }

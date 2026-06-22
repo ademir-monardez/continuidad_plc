@@ -1,0 +1,20 @@
+# .NET build output
+bin/
+obj/
+build-check/
+
+# User/local editor files
+.vs/
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Archives and generated packages
+*.rar
+*.zip
+
+# OS files
+Thumbs.db
+.DS_Store

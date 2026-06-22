@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sistema MICA - Coils</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand brand-left">
+      <div class="mark">LC</div>
+      <div>
+        <span>GRUPO MINERO</span>
+        <strong>LAS CENIZAS</strong>
+      </div>
+    </div>
+
+    <h1>SISTEMA MICA</h1>
+
+    <div class="brand brand-right">
+      <strong>P.IP</strong>
+      <span>CONECTADOS<br>CON TUS IDEAS</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="equipment-panel">
+      <div>
+        <span class="label">EQUIPO</span>
+        <strong>Caseron 32</strong>
+      </div>
+
+      <div class="connection">
+        <span id="connectionDot" class="status-dot"></span>
+        <strong id="connectionText">CONECTANDO</strong>
+      </div>
+    </section>
+
+    <section class="coils-grid" aria-label="Estados de coils">
+      <article class="coil-card" data-coil="0">
+        <h2>30 METROS</h2>
+        <div class="lights">
+          <span class="light false-light active" aria-label="Coil 0 falso"></span>
+          <span class="light true-light" aria-label="Coil 0 verdadero"></span>
+        </div>
+      </article>
+
+      <article class="coil-card" data-coil="1">
+        <h2>50 METROS</h2>
+        <div class="lights">
+          <span class="light false-light active" aria-label="Coil 1 falso"></span>
+          <span class="light true-light" aria-label="Coil 1 verdadero"></span>
+        </div>
+      </article>
+
+      <article class="coil-card" data-coil="2">
+        <h2>80 METROS</h2>
+        <div class="lights">
+          <span class="light false-light active" aria-label="Coil 2 falso"></span>
+          <span class="light true-light" aria-label="Coil 2 verdadero"></span>
+        </div>
+      </article>
+    </section>
+
+    <p id="lastUpdate" class="last-update">Esperando datos de Supabase...</p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

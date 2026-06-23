@@ -613,10 +613,13 @@ main {
     align-items: flex-start;
     flex-direction: column;
     gap: 18px;
+    width: 100%;
   }
 
   .detail-equipment-panel .connection {
+    width: 100%;
     min-width: 0;
+    justify-content: flex-start;
   }
 
   .detail-coils-grid {
@@ -790,32 +793,40 @@ main {
   }
 
   .detail-equipment-panel > div:first-child {
+    width: 100%;
     min-height: 0;
-    padding: 14px;
+    padding: 12px;
+    border-radius: 8px;
   }
 
   .detail-equipment-title {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 10px;
   }
 
   .detail-coil-selector {
-    width: 100%;
+    width: fit-content;
     justify-content: flex-start;
     font-size: 14px;
   }
 
   .detail-coil-card {
-    min-height: 190px;
-    padding: 22px 14px 20px;
+    display: grid;
+    align-content: center;
+    min-height: 156px;
+    padding: 18px 14px;
   }
 
   .detail-coil-card h2 {
-    margin-bottom: 28px;
-    font-size: 24px;
+    margin-bottom: 22px;
+    font-size: 22px;
+    letter-spacing: 0;
   }
 
   .detail-lights {
-    gap: 34px;
+    justify-content: space-evenly;
+    gap: 18px;
   }
 
   .history-card {
@@ -828,7 +839,7 @@ main {
   }
 
   .history-table {
-    min-width: 620px;
+    min-width: 560px;
     font-size: 13px;
   }
 
@@ -858,6 +869,16 @@ main {
     font-size: 21px;
   }
 
+  .detail-equipment-panel strong {
+    font-size: 20px;
+  }
+
+  .detail-coil-selector {
+    display: grid;
+    grid-template-columns: 1fr 50px;
+    width: 100%;
+  }
+
   .coil-row {
     grid-template-columns: 74px minmax(0, 1fr);
   }
@@ -869,5 +890,18 @@ main {
   .light {
     width: 56px;
     height: 56px;
+  }
+
+  .detail-coil-card {
+    min-height: 144px;
+    padding: 16px 12px;
+  }
+
+  .detail-lights {
+    gap: 12px;
+  }
+
+  .history-table {
+    min-width: 520px;
   }
 }

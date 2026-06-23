@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Caseron 32</title>
-  <link rel="stylesheet" href="styles.css?v=1.3">
+  <link rel="stylesheet" href="styles.css?v=1.6">
 </head>
 <body>
   <header class="topbar">
@@ -44,43 +44,99 @@
         <strong>Caserón 32</strong>
       </div>
 
-      <div class="connection disconnected">
-        <span class="status-dot error"></span>
-        <strong>DESCONECTADO</strong>
+      <div class="connection loading" id="detailConnection">
+        <span class="status-dot" id="detailConnectionDot"></span>
+        <strong id="detailConnectionText">CARGANDO...</strong>
       </div>
     </section>
 
     <section class="detail-coils-grid" aria-label="Detalle Caseron 32">
-      <article class="detail-coil-card">
+      <article class="detail-coil-card" data-coil="0">
         <h2>Coil 0: 30 Metros</h2>
         <div class="detail-lights">
-          <span class="light" aria-label="30 metros luz izquierda"></span>
-          <span class="light" aria-label="30 metros luz derecha"></span>
+          <span class="light false-light" aria-label="Coil 0 falso"></span>
+          <span class="light true-light" aria-label="Coil 0 verdadero"></span>
         </div>
       </article>
 
-      <article class="detail-coil-card">
+      <article class="detail-coil-card" data-coil="1">
         <h2>Coil 1: 50 Metros</h2>
         <div class="detail-lights">
-          <span class="light" aria-label="50 metros luz izquierda"></span>
-          <span class="light" aria-label="50 metros luz derecha"></span>
+          <span class="light false-light" aria-label="Coil 1 falso"></span>
+          <span class="light true-light" aria-label="Coil 1 verdadero"></span>
         </div>
       </article>
 
-      <article class="detail-coil-card">
+      <article class="detail-coil-card" data-coil="2">
         <h2>Coil 2: 80 Metros</h2>
         <div class="detail-lights">
-          <span class="light" aria-label="80 metros luz izquierda"></span>
-          <span class="light" aria-label="80 metros luz derecha"></span>
+          <span class="light false-light" aria-label="Coil 2 falso"></span>
+          <span class="light true-light" aria-label="Coil 2 verdadero"></span>
+        </div>
+      </article>
+
+      <article class="detail-coil-card" data-coil="3">
+        <h2>Coil 3</h2>
+        <div class="detail-lights">
+          <span class="light false-light" aria-label="Coil 3 falso"></span>
+          <span class="light true-light" aria-label="Coil 3 verdadero"></span>
+        </div>
+      </article>
+
+      <article class="detail-coil-card" data-coil="4">
+        <h2>Coil 4</h2>
+        <div class="detail-lights">
+          <span class="light false-light" aria-label="Coil 4 falso"></span>
+          <span class="light true-light" aria-label="Coil 4 verdadero"></span>
+        </div>
+      </article>
+
+      <article class="detail-coil-card" data-coil="5">
+        <h2>Coil 5</h2>
+        <div class="detail-lights">
+          <span class="light false-light" aria-label="Coil 5 falso"></span>
+          <span class="light true-light" aria-label="Coil 5 verdadero"></span>
+        </div>
+      </article>
+
+      <article class="detail-coil-card" data-coil="6">
+        <h2>Coil 6</h2>
+        <div class="detail-lights">
+          <span class="light false-light" aria-label="Coil 6 falso"></span>
+          <span class="light true-light" aria-label="Coil 6 verdadero"></span>
         </div>
       </article>
 
       <article class="history-card">
         <h2>Historial de Activaciones</h2>
+        <div class="history-table-wrap">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>coil_nombre</th>
+                <th>estado_actual</th>
+                <th>evento</th>
+                <th>fecha_deteccion</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody">
+              <tr>
+                <td colspan="4">Cargando historial...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="history-pagination">
+          <button id="historyPrevButton" type="button">Anterior</button>
+          <span id="historyPageText">Pagina 1</span>
+          <button id="historyNextButton" type="button">Siguiente</button>
+        </div>
       </article>
     </section>
   </main>
 
-  <script src="menu.js?v=1.3"></script>
+  <script src="menu.js?v=1.6"></script>
+  <script src="caseron32.js?v=1.7"></script>
 </body>
 </html>

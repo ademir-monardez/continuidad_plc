@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "PlcReader/1.0.0": {
+        "dependencies": {
+          "NModbus": "3.0.83"
+        },
+        "runtime": {
+          "PlcReader.dll": {}
+        }
+      },
+      "NModbus/3.0.83": {
+        "runtime": {
+          "lib/net6.0/NModbus.dll": {
+            "assemblyVersion": "3.0.83.0",
+            "fileVersion": "3.0.83.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "PlcReader/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NModbus/3.0.83": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DLqEobLC168wE1t4xHyEEFfj/IkX2Kx7w8PaNgaipb/8B7DSHMUlXi/TLJfD8EYS5rN0ENInhyOCC5U0wadtuQ==",
+      "path": "nmodbus/3.0.83",
+      "hashPath": "nmodbus.3.0.83.nupkg.sha512"
+    }
+  }
+}

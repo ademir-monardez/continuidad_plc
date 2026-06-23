@@ -127,12 +127,6 @@ using System.Text.Json;
                 for (int i = 0; i < coilsAnteriores.Length; i++)
                 {
                     Console.WriteLine($"Coil {i}: {coilsAnteriores[i]}");
-
-                    await GuardarCambioEnSupabaseAsync(
-                        coilId: i,
-                        estadoPrevio: coilsAnteriores[i],
-                        estadoActual: coilsAnteriores[i],
-                        evento: "Estado inicial");
                 }
 
                 while (true)
@@ -239,7 +233,7 @@ using System.Text.Json;
                 coil_nombre = $"Coil {coilId}",
                 estado_actual = estadoActual,
                 estado_previo = estadoPrevio,
-                evento = evento ?? (estadoActual ? "Activada" : "Desactivada")
+                evento = evento ?? (estadoActual ? "Alarma Activa" : "Alarma Apagada")
             };
 
             string json = JsonSerializer.Serialize(datos);

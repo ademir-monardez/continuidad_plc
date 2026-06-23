@@ -228,11 +228,12 @@ main {
 }
 
 .coils-panel {
-  min-height: 430px;
+  height: 430px;
   padding: 26px 28px 18px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 5px;
+  overflow: hidden;
 }
 
 .clickable-card {
@@ -249,11 +250,34 @@ main {
   outline-offset: 2px;
 }
 
-.coils-panel h2 {
+.panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   margin: 0 0 30px;
+}
+
+.panel-title select {
+  width: 58px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #ffffff;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.coils-panel h2 {
+  margin: 0;
   text-align: center;
   font-size: 34px;
   font-weight: 500;
+}
+
+.coil-list {
+  display: grid;
 }
 
 .coil-row {
@@ -261,6 +285,10 @@ main {
   grid-template-columns: 124px minmax(0, 1fr);
   align-items: center;
   min-height: 104px;
+}
+
+.coil-row[hidden] {
+  display: none;
 }
 
 .coil-row strong {
@@ -282,6 +310,33 @@ main {
   border-radius: 50%;
   background: radial-gradient(circle at 52% 48%, var(--gray-light) 0 8%, #9f9f9f 32%, var(--gray-dark) 76%);
   box-shadow: inset -10px -12px 18px rgba(55, 20, 20, 0.42);
+}
+
+.coils-panel.compact .panel-title {
+  margin-bottom: 14px;
+}
+
+.coils-panel.compact .coil-list {
+  height: 324px;
+  align-content: space-evenly;
+}
+
+.coils-panel.compact .coil-row {
+  min-height: 43px;
+}
+
+.coils-panel.compact .coil-row strong {
+  font-size: 20px;
+}
+
+.coils-panel.compact .lights {
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.coils-panel.compact .light {
+  width: 42px;
+  height: 42px;
 }
 
 .light.active {
@@ -335,11 +390,22 @@ main {
 .detail-equipment-panel .connection {
   min-width: 250px;
   justify-content: flex-end;
-  color: #cf1f1f;
 }
 
 .detail-equipment-panel .connection strong {
   font-size: 20px;
+}
+
+.detail-equipment-panel .connection.connected {
+  color: #007923;
+}
+
+.detail-equipment-panel .connection.disconnected {
+  color: #cf1f1f;
+}
+
+.detail-equipment-panel .connection.loading {
+  color: #777777;
 }
 
 .detail-coils-grid {
@@ -357,7 +423,7 @@ main {
 }
 
 .detail-coil-card h2 {
-  margin: 0 0 56px;
+  margin: 0 0 42px;
   text-align: center;
   font-size: 29px;
   letter-spacing: 1px;
@@ -366,13 +432,13 @@ main {
 .detail-lights {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: clamp(46px, 8vw, 92px);
 }
 
 .history-card {
   grid-column: 1 / -1;
-  min-height: 240px;
+  min-height: 360px;
   padding: 30px 28px;
   background: var(--panel);
   border: 1px solid var(--border);
@@ -380,10 +446,56 @@ main {
 }
 
 .history-card h2 {
-  margin: 0;
+  margin: 0 0 22px;
   text-align: center;
   font-size: 29px;
   letter-spacing: 1px;
+}
+
+.history-table-wrap {
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.history-table th,
+.history-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #dedede;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.history-table th {
+  background: #f5f5f5;
+  font-weight: 700;
+}
+
+.history-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.history-pagination button {
+  padding: 9px 16px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: #ffffff;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.history-pagination button:disabled {
+  color: #9a9a9a;
+  cursor: not-allowed;
 }
 
 @media (max-width: 900px) {
@@ -438,6 +550,34 @@ main {
   .light {
     width: 82px;
     height: 82px;
+  }
+
+  .coils-panel.compact .panel-title {
+    margin-bottom: 14px;
+  }
+
+  .coils-panel.compact .coil-list {
+    height: 324px;
+    align-content: space-evenly;
+  }
+
+  .coils-panel.compact .coil-row {
+    grid-template-columns: 96px minmax(0, 1fr);
+    min-height: 43px;
+  }
+
+  .coils-panel.compact .coil-row strong {
+    font-size: 20px;
+  }
+
+  .coils-panel.compact .lights {
+    justify-content: space-between;
+    gap: 22px;
+  }
+
+  .coils-panel.compact .light {
+    width: 42px;
+    height: 42px;
   }
 
   .detail-page {

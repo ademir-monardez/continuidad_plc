@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sistema MICA - Coils</title>
-  <link rel="stylesheet" href="styles.css?v=1.3">
+  <link rel="stylesheet" href="styles.css?v=1.4">
 </head>
 <body>
   <header class="topbar">
@@ -40,29 +40,74 @@
   <main>
     <section class="cards-grid" aria-label="Estados de equipos">
       <article class="coils-panel clickable-card" aria-label="Estados de coils Caseron 32" role="link" tabindex="0" data-href="caseron32.html">
-        <h2>Equipo Caseron 32</h2>
-
-        <div class="coil-row" data-coil="0">
-          <strong>Coil 0:</strong>
-          <div class="lights">
-            <span class="light false-light active" aria-label="Coil 0 falso"></span>
-            <span class="light true-light" aria-label="Coil 0 verdadero"></span>
-          </div>
+        <div class="panel-title">
+          <h2>Equipo Caseron 32</h2>
+          <select id="coilCountSelector" aria-label="Cantidad de coils">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
         </div>
 
-        <div class="coil-row" data-coil="1">
-          <strong>Coil 1:</strong>
-          <div class="lights">
-            <span class="light false-light active" aria-label="Coil 1 falso"></span>
-            <span class="light true-light" aria-label="Coil 1 verdadero"></span>
+        <div class="coil-list">
+          <div class="coil-row" data-coil="0">
+            <strong>Coil 0:</strong>
+            <div class="lights">
+              <span class="light false-light active" aria-label="Coil 0 falso"></span>
+              <span class="light true-light" aria-label="Coil 0 verdadero"></span>
+            </div>
           </div>
-        </div>
 
-        <div class="coil-row" data-coil="2">
-          <strong>Coil 2:</strong>
-          <div class="lights">
-            <span class="light false-light active" aria-label="Coil 2 falso"></span>
-            <span class="light true-light" aria-label="Coil 2 verdadero"></span>
+          <div class="coil-row" data-coil="1">
+            <strong>Coil 1:</strong>
+            <div class="lights">
+              <span class="light false-light active" aria-label="Coil 1 falso"></span>
+              <span class="light true-light" aria-label="Coil 1 verdadero"></span>
+            </div>
+          </div>
+
+          <div class="coil-row" data-coil="2">
+            <strong>Coil 2:</strong>
+            <div class="lights">
+              <span class="light false-light active" aria-label="Coil 2 falso"></span>
+              <span class="light true-light" aria-label="Coil 2 verdadero"></span>
+            </div>
+          </div>
+
+          <div class="coil-row" data-coil="3" hidden>
+            <strong>Coil 3:</strong>
+            <div class="lights">
+              <span class="light false-light active" aria-label="Coil 3 falso"></span>
+              <span class="light true-light" aria-label="Coil 3 verdadero"></span>
+            </div>
+          </div>
+
+          <div class="coil-row" data-coil="4" hidden>
+            <strong>Coil 4:</strong>
+            <div class="lights">
+              <span class="light false-light active" aria-label="Coil 4 falso"></span>
+              <span class="light true-light" aria-label="Coil 4 verdadero"></span>
+            </div>
+          </div>
+
+          <div class="coil-row" data-coil="5" hidden>
+            <strong>Coil 5:</strong>
+            <div class="lights">
+              <span class="light false-light active" aria-label="Coil 5 falso"></span>
+              <span class="light true-light" aria-label="Coil 5 verdadero"></span>
+            </div>
+          </div>
+
+          <div class="coil-row" data-coil="6" hidden>
+            <strong>Coil 6:</strong>
+            <div class="lights">
+              <span class="light false-light active" aria-label="Coil 6 falso"></span>
+              <span class="light true-light" aria-label="Coil 6 verdadero"></span>
+            </div>
           </div>
         </div>
       </article>
@@ -99,7 +144,7 @@
     <p id="lastUpdate" class="last-update">Esperando datos de Supabase...</p>
   </main>
 
-  <script src="menu.js?v=1.3"></script>
-  <script src="app.js?v=1.3"></script>
+  <script src="menu.js?v=1.4"></script>
+  <script src="app.js?v=1.5"></script>
 </body>
 </html>

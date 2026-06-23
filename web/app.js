@@ -2,15 +2,19 @@ const SUPABASE_URL = "https://nursugqypwjcxgooltgo.supabase.co";
 const SUPABASE_KEY = "sb_publishable_6tSi5_on0TrNxfzn8Iue1Q_mdSSOqGo";
 
 const EQUIPO_ID = "ALT-EQ001";
-const coilStates = [null, null, null];
+const MAX_COILS = 7;
+const coilStates = Array(MAX_COILS).fill(null);
 const lastUpdate = document.getElementById("lastUpdate");
 const connectionDot = document.getElementById("connectionDot");
 const connectionText = document.getElementById("connectionText");
+const coilPanel = document.querySelector(".coils-panel[data-href]");
+const coilCountSelector = document.getElementById("coilCountSelector");
 const clickableCards = document.querySelectorAll("[data-href]");
+let activeCoilCount = Number(coilCountSelector?.value ?? 3);
 
 for (const card of clickableCards) {
   card.addEventListener("click", (event) => {
-    if (event.target.closest("button")) {
+    if (event.target.closest("a, button, select")) {
       return;
     }
 
@@ -18,12 +22,21 @@ for (const card of clickableCards) {
   });
 
   card.addEventListener("keydown", (event) => {
+    if (event.target.closest("a, button, select")) {
+      return;
+    }
+
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       window.location.href = card.dataset.href;
     }
   });
 }
+
+coilCountSelector?.addEventListener("change", () => {
+  activeCoilCount = Number(coilCountSelector.value);
+  renderCoils();
+});
 
 function setConnection(state, text) {
   connectionDot.classList.remove("connected", "error");
@@ -46,8 +59,16 @@ function setCoilState(coilId, value) {
 }
 
 function renderCoils() {
-  for (let i = 0; i < coilStates.length; i++) {
-    setCoilState(i, coilStates[i]);
+  coilPanel?.classList.toggle("compact", activeCoilCount > 3);
+
+  for (let i = 0; i < MAX_COILS; i++) {
+    const row = document.querySelector(`[data-coil="${i}"]`);
+
+    if (row) {
+      row.hidden = i >= activeCoilCount;
+    }
+
+    setCoilState(i, i < activeCoilCount ? coilStates[i] : null);
   }
 }
 
@@ -82,7 +103,7 @@ async function loadLatestStates() {
   const estadoEquipo = equipos[0]?.estado_equipo ?? "apagado";
 
   if (estadoEquipo !== "encendido") {
-    for (let i = 0; i < coilStates.length; i++) {
+    for (let i = 0; i < MAX_COILS; i++) {
       coilStates[i] = null;
     }
 
@@ -94,9 +115,9 @@ async function loadLatestStates() {
 
   const url = new URL(`${SUPABASE_URL}/rest/v1/deteccion_coils`);
   url.searchParams.set("select", "coil_id,estado_actual,fecha_deteccion");
-  url.searchParams.set("coil_id", "in.(0,1,2)");
+  url.searchParams.set("coil_id", "in.(0,1,2,3,4,5,6)");
   url.searchParams.set("order", "fecha_deteccion.desc");
-  url.searchParams.set("limit", "30");
+  url.searchParams.set("limit", "70");
 
   const response = await fetch(url, {
     headers: {
@@ -112,13 +133,20 @@ async function loadLatestStates() {
   const seen = new Set();
   let newestDate = null;
 
+  for (let i = 0; i < MAX_COILS; i++) {
+    coilStates[i] = false;
+  }
+
   for (const row of rows) {
     if (seen.has(row.coil_id)) {
       continue;
     }
 
     seen.add(row.coil_id);
-    coilStates[row.coil_id] = row.estado_actual;
+    if (row.coil_id >= 0 && row.coil_id < MAX_COILS) {
+      coilStates[row.coil_id] = row.estado_actual;
+    }
+
     newestDate = newestDate ?? row.fecha_deteccion;
   }
 

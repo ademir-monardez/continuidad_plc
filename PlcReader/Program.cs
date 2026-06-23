@@ -8,6 +8,7 @@ using System.Text.Json;
     private const string SupabaseUrl = "https://nursugqypwjcxgooltgo.supabase.co";
     //private const string SupabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51cnN1Z3F5cHdqY3hnb29sdGdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxMzkwNjEsImV4cCI6MjA5NzcxNTA2MX0.IkScFVVPhSAC_Q1NnP5q6DUNC9CASRj5Omcyy3ZnAf4";
     private const string SupabaseKey = "sb_publishable_6tSi5_on0TrNxfzn8Iue1Q_mdSSOqGo" ;
+    private const string EquipoId = "ALT-EQ001";
     private static async Task Main()
     {
         string ip = "192.168.1.214";
@@ -16,17 +17,7 @@ using System.Text.Json;
 
         try
         {
-            int numberOfPoints = 3;
-
-            using var tcpClient = new TcpClient();
-
-            Console.WriteLine($"Conectando a {ip}:{port}...");
-
-            await tcpClient.ConnectAsync(ip, port);
-
-            var factory = new ModbusFactory();
-
-            using var master = factory.CreateMaster(tcpClient);
+            int numberOfPoints = 7;
 
             while (true)
             {
@@ -46,10 +37,7 @@ using System.Text.Json;
 
                 if (opcion == "1")
                 {
-                    bool[] coils = await master.ReadCoilsAsync(
-                        slaveId,
-                        startAddress: 0,
-                        numberOfPoints: (ushort)numberOfPoints);
+                    bool[] coils = await LeerCoilsAsync(ip, port, slaveId, numberOfPoints);
 
                     Console.WriteLine("Resultado:");
 
@@ -66,10 +54,7 @@ using System.Text.Json;
 
                     while (true)
                     {
-                        bool[] coils = await master.ReadCoilsAsync(
-                            slaveId,
-                            startAddress: 0,
-                            numberOfPoints: (ushort)numberOfPoints);
+                        bool[] coils = await LeerCoilsAsync(ip, port, slaveId, numberOfPoints);
 
                         Console.WriteLine($"Resultado {segundos} segundos:");
 
@@ -84,72 +69,161 @@ using System.Text.Json;
                 }
                 else if (opcion == "3")
                 {
-                    bool[] coilsAnteriores = await master.ReadCoilsAsync(
-                        slaveId,
-                        startAddress: 0,
-                        numberOfPoints: (ushort)numberOfPoints);
-
-                    Console.WriteLine("Lectura inicial:");
-
-                    for (int i = 0; i < coilsAnteriores.Length; i++)
-                    {
-                        Console.WriteLine($"Coil {i}: {coilsAnteriores[i]}");
-
-                        await GuardarCambioEnSupabaseAsync(
-                            coilId: i,
-                            estadoPrevio: coilsAnteriores[i],
-                            estadoActual: coilsAnteriores[i],
-                            evento: "Estado inicial");
-                    }
-
-                    while (true)
-                    {
-                        bool[] coilsActuales = await master.ReadCoilsAsync(
-                            slaveId,
-                            startAddress: 0,
-                            numberOfPoints: (ushort)numberOfPoints);
-
-                        bool hayCambio = false;
-
-                        for (int i = 0; i < coilsActuales.Length; i++)
-                        {
-                            if (coilsActuales[i] != coilsAnteriores[i])
-                            {
-                                hayCambio = true;
-                                break;
-                            }
-                        }
-
-                        if (hayCambio)
-                        {
-                            DateTime fechaCambio = DateTime.Now;
-
-                            Console.WriteLine($"Cambio detectado: {fechaCambio:dd-MM-yyyy HH:mm:ss}");
-
-                            for (int i = 0; i < coilsActuales.Length; i++)
-                            {
-                                Console.WriteLine($"Coil {i}: {coilsActuales[i]}");
-
-                                if (coilsActuales[i] != coilsAnteriores[i])
-                                {
-                                    await GuardarCambioEnSupabaseAsync(
-                                        coilId: i,
-                                        estadoPrevio: coilsAnteriores[i],
-                                        estadoActual: coilsActuales[i]);
-                                }
-                            }
-
-                            coilsAnteriores = coilsActuales;
-                        }
-
-                        await Task.Delay(100);
-                    }
+                    await MonitorearCambiosConReconexionAsync(ip, port, slaveId, numberOfPoints);
                 }
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    private static async Task<bool[]> LeerCoilsAsync(string ip, int port, byte slaveId, int numberOfPoints)
+    {
+        using var tcpClient = new TcpClient();
+
+        Console.WriteLine($"Conectando a {ip}:{port}...");
+
+        await tcpClient.ConnectAsync(ip, port);
+
+        var factory = new ModbusFactory();
+
+        using var master = factory.CreateMaster(tcpClient);
+
+        return await master.ReadCoilsAsync(
+            slaveId,
+            startAddress: 0,
+            numberOfPoints: (ushort)numberOfPoints);
+    }
+
+    private static async Task MonitorearCambiosConReconexionAsync(string ip, int port, byte slaveId, int numberOfPoints)
+    {
+        while (true)
+        {
+            try
+            {
+                using var tcpClient = new TcpClient();
+
+                Console.WriteLine($"Conectando a {ip}:{port}...");
+
+                await tcpClient.ConnectAsync(ip, port);
+
+                Console.WriteLine("PLC conectado. Monitoreando cambios...");
+
+                var factory = new ModbusFactory();
+
+                using var master = factory.CreateMaster(tcpClient);
+
+                bool[] coilsAnteriores = await master.ReadCoilsAsync(
+                    slaveId,
+                    startAddress: 0,
+                    numberOfPoints: (ushort)numberOfPoints);
+
+                await ActualizarEstadoEquipoAsync("encendido");
+
+                Console.WriteLine("Lectura inicial:");
+
+                for (int i = 0; i < coilsAnteriores.Length; i++)
+                {
+                    Console.WriteLine($"Coil {i}: {coilsAnteriores[i]}");
+
+                    await GuardarCambioEnSupabaseAsync(
+                        coilId: i,
+                        estadoPrevio: coilsAnteriores[i],
+                        estadoActual: coilsAnteriores[i],
+                        evento: "Estado inicial");
+                }
+
+                while (true)
+                {
+                    bool[] coilsActuales = await master.ReadCoilsAsync(
+                        slaveId,
+                        startAddress: 0,
+                        numberOfPoints: (ushort)numberOfPoints);
+
+                    bool hayCambio = false;
+
+                    for (int i = 0; i < coilsActuales.Length; i++)
+                    {
+                        if (coilsActuales[i] != coilsAnteriores[i])
+                        {
+                            hayCambio = true;
+                            break;
+                        }
+                    }
+
+                    if (hayCambio)
+                    {
+                        DateTime fechaCambio = DateTime.Now;
+
+                        Console.WriteLine($"Cambio detectado: {fechaCambio:dd-MM-yyyy HH:mm:ss}");
+
+                        for (int i = 0; i < coilsActuales.Length; i++)
+                        {
+                            Console.WriteLine($"Coil {i}: {coilsActuales[i]}");
+
+                            if (coilsActuales[i] != coilsAnteriores[i])
+                            {
+                                await GuardarCambioEnSupabaseAsync(
+                                    coilId: i,
+                                    estadoPrevio: coilsAnteriores[i],
+                                    estadoActual: coilsActuales[i]);
+                            }
+                        }
+
+                        coilsAnteriores = coilsActuales;
+                    }
+
+                    await Task.Delay(100);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Conexion perdida con el PLC: {ex.Message}");
+                await ActualizarEstadoEquipoAsync("apagado");
+                Console.WriteLine("Reintentando conexion en 5 segundos...");
+                await Task.Delay(5000);
+            }
+        }
+    }
+
+    private static async Task ActualizarEstadoEquipoAsync(string estadoEquipo)
+    {
+        try
+        {
+            using var httpClient = new HttpClient();
+
+            var datos = new
+            {
+                estado_equipo = estadoEquipo
+            };
+
+            string json = JsonSerializer.Serialize(datos);
+
+            using var request = new HttpRequestMessage(
+                HttpMethod.Patch,
+                $"{SupabaseUrl}/rest/v1/equipos_plc?id_equipo=eq.{Uri.EscapeDataString(EquipoId)}");
+
+            request.Headers.Add("apikey", SupabaseKey);
+            request.Headers.Add("Prefer", "return=minimal");
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using HttpResponseMessage response = await httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"Estado del equipo actualizado en Supabase: {estadoEquipo}");
+            }
+            else
+            {
+                string error = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"No se pudo actualizar estado del equipo: {response.StatusCode} - {error}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al actualizar estado del equipo: {ex.Message}");
         }
     }
 

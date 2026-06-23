@@ -7,10 +7,49 @@ const coilStates = Array(MAX_COILS).fill(null);
 const lastUpdate = document.getElementById("lastUpdate");
 const connectionDot = document.getElementById("connectionDot");
 const connectionText = document.getElementById("connectionText");
-const coilPanel = document.querySelector(".coils-panel[data-href]");
-const coilCountSelector = document.getElementById("coilCountSelector");
+const coilPanels = document.querySelectorAll(".coils-panel");
+const liveCoilPanel = document.querySelector(".coils-panel[data-live='true']");
 const clickableCards = document.querySelectorAll("[data-href]");
-let activeCoilCount = Number(coilCountSelector?.value ?? 3);
+
+function createCoilPanel(panel) {
+  const title = panel.querySelector("h2")?.textContent ?? "Equipo ?";
+  const defaultCount = panel.dataset.defaultCount ?? "3";
+  const options = Array.from({ length: MAX_COILS }, (_, index) => {
+    const value = String(index + 1);
+    const selected = value === defaultCount ? " selected" : "";
+    return `<option value="${value}"${selected}>${value}</option>`;
+  }).join("");
+  const rows = Array.from({ length: MAX_COILS }, (_, index) => `
+          <div class="coil-row" data-coil="${index}">
+            <strong>Coil ${index}:</strong>
+            <div class="lights">
+              <span class="light false-light" aria-label="Coil ${index} falso"></span>
+              <span class="light true-light" aria-label="Coil ${index} verdadero"></span>
+            </div>
+          </div>`).join("");
+
+  panel.dataset.activeCoilCount = defaultCount;
+  panel.innerHTML = `
+        <div class="panel-title">
+          <h2>${title}</h2>
+          <select class="coil-count-selector" aria-label="Cantidad de coils">
+            ${options}
+          </select>
+        </div>
+
+        <div class="coil-list">
+${rows}
+        </div>`;
+
+  panel.querySelector(".coil-count-selector").addEventListener("change", (event) => {
+    panel.dataset.activeCoilCount = event.target.value;
+    renderPanelCoils(panel);
+  });
+
+  renderPanelCoils(panel);
+}
+
+coilPanels.forEach(createCoilPanel);
 
 for (const card of clickableCards) {
   card.addEventListener("click", (event) => {
@@ -33,19 +72,14 @@ for (const card of clickableCards) {
   });
 }
 
-coilCountSelector?.addEventListener("change", () => {
-  activeCoilCount = Number(coilCountSelector.value);
-  renderCoils();
-});
-
 function setConnection(state, text) {
   connectionDot.classList.remove("connected", "error");
   connectionDot.classList.add(state);
   connectionText.textContent = text;
 }
 
-function setCoilState(coilId, value) {
-  const card = document.querySelector(`[data-coil="${coilId}"]`);
+function setCoilState(panel, coilId, value) {
+  const card = panel.querySelector(`[data-coil="${coilId}"]`);
 
   if (!card) {
     return;
@@ -58,17 +92,26 @@ function setCoilState(coilId, value) {
   trueLight.classList.toggle("active", value === true);
 }
 
-function renderCoils() {
-  coilPanel?.classList.toggle("compact", activeCoilCount > 3);
+function renderPanelCoils(panel) {
+  const activeCoilCount = Number(panel.dataset.activeCoilCount ?? 3);
+  const isLivePanel = panel === liveCoilPanel;
+
+  panel.classList.toggle("compact", activeCoilCount > 3);
 
   for (let i = 0; i < MAX_COILS; i++) {
-    const row = document.querySelector(`[data-coil="${i}"]`);
+    const row = panel.querySelector(`[data-coil="${i}"]`);
 
     if (row) {
       row.hidden = i >= activeCoilCount;
     }
 
-    setCoilState(i, i < activeCoilCount ? coilStates[i] : null);
+    setCoilState(panel, i, isLivePanel && i < activeCoilCount ? coilStates[i] : null);
+  }
+}
+
+function renderCoils() {
+  if (liveCoilPanel) {
+    renderPanelCoils(liveCoilPanel);
   }
 }
 

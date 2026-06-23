@@ -7,6 +7,7 @@ const coilStates = Array(MAX_COILS).fill(null);
 const detailConnection = document.getElementById("detailConnection");
 const detailConnectionDot = document.getElementById("detailConnectionDot");
 const detailConnectionText = document.getElementById("detailConnectionText");
+const detailCoilCountSelector = document.getElementById("detailCoilCountSelector");
 const historyTableBody = document.getElementById("historyTableBody");
 const historyPrevButton = document.getElementById("historyPrevButton");
 const historyNextButton = document.getElementById("historyNextButton");
@@ -14,6 +15,7 @@ const historyPageText = document.getElementById("historyPageText");
 const HISTORY_PAGE_SIZE = 10;
 let historyPage = 0;
 let lastHistoryRowCount = 0;
+let visibleCoilCount = Number(detailCoilCountSelector?.value ?? MAX_COILS);
 
 function setDetailConnection(isConnected) {
   detailConnection.classList.remove("loading");
@@ -40,6 +42,12 @@ function setDetailCoilState(coilId, value) {
 
 function renderDetailCoils() {
   for (let i = 0; i < MAX_COILS; i++) {
+    const card = document.querySelector(`.detail-coil-card[data-coil="${i}"]`);
+
+    if (card) {
+      card.hidden = i >= visibleCoilCount;
+    }
+
     setDetailCoilState(i, coilStates[i]);
   }
 }
@@ -215,6 +223,11 @@ historyNextButton.addEventListener("click", async () => {
 
   historyPage += 1;
   await loadHistoryPage();
+});
+
+detailCoilCountSelector?.addEventListener("change", () => {
+  visibleCoilCount = Number(detailCoilCountSelector.value);
+  renderDetailCoils();
 });
 
 renderDetailCoils();

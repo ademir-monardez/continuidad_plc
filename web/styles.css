@@ -356,9 +356,7 @@ main {
 }
 
 .empty-card {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  display: block;
 }
 
 .detail-page {
@@ -385,6 +383,33 @@ main {
   padding: 20px 24px;
   border: 1px solid #d7d7d7;
   border-radius: 12px;
+}
+
+.detail-equipment-title {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.detail-coil-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.detail-coil-selector select {
+  width: 58px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #ffffff;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
 }
 
 .detail-equipment-panel .connection {
@@ -600,5 +625,249 @@ main {
 
   .detail-lights {
     justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .topbar {
+    gap: 8px;
+    min-height: 0;
+    padding: 10px 12px;
+  }
+
+  .topbar h1 {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  .brand {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .brand-left {
+    justify-content: flex-start;
+  }
+
+  .brand-right {
+    justify-content: center;
+  }
+
+  .menu-button {
+    width: 46px;
+    height: 46px;
+  }
+
+  .menu-button span {
+    width: 20px;
+    height: 2px;
+  }
+
+  .menu-dropdown {
+    min-width: 138px;
+  }
+
+  .mark {
+    width: 54px;
+    height: 44px;
+    border-width: 5px;
+    font-size: 16px;
+  }
+
+  .brand-left span {
+    font-size: 12px;
+  }
+
+  .brand-left strong {
+    font-size: 22px;
+  }
+
+  .brand-right strong {
+    font-size: 38px;
+  }
+
+  .brand-right span {
+    font-size: 10px;
+    letter-spacing: 0;
+  }
+
+  main,
+  .detail-page {
+    padding: 10px 10px 18px;
+  }
+
+  .equipment-panel,
+  .detail-equipment-panel {
+    gap: 12px;
+    min-height: 0;
+    padding: 12px;
+  }
+
+  .equipment-panel strong,
+  .detail-equipment-panel strong {
+    font-size: 22px;
+  }
+
+  .connection {
+    gap: 8px;
+  }
+
+  .connection strong,
+  .detail-equipment-panel .connection strong {
+    font-size: 16px;
+    letter-spacing: 0;
+  }
+
+  .status-dot {
+    width: 14px;
+    height: 14px;
+  }
+
+  .cards-grid,
+  .detail-coils-grid {
+    gap: 10px;
+  }
+
+  .coils-panel {
+    height: 360px;
+    padding: 16px 14px 12px;
+  }
+
+  .panel-title {
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .coils-panel h2 {
+    font-size: 24px;
+  }
+
+  .panel-title select,
+  .detail-coil-selector select {
+    width: 52px;
+    height: 32px;
+  }
+
+  .coil-row {
+    grid-template-columns: 86px minmax(0, 1fr);
+    min-height: 88px;
+  }
+
+  .coil-row strong {
+    font-size: 22px;
+  }
+
+  .lights {
+    justify-content: space-around;
+    gap: 14px;
+  }
+
+  .light {
+    width: 64px;
+    height: 64px;
+  }
+
+  .coils-panel.compact .coil-list {
+    height: 282px;
+  }
+
+  .coils-panel.compact .coil-row {
+    grid-template-columns: 72px minmax(0, 1fr);
+    min-height: 38px;
+  }
+
+  .coils-panel.compact .coil-row strong {
+    font-size: 16px;
+  }
+
+  .coils-panel.compact .lights {
+    gap: 12px;
+  }
+
+  .coils-panel.compact .light {
+    width: 36px;
+    height: 36px;
+  }
+
+  .detail-equipment-panel > div:first-child {
+    min-height: 0;
+    padding: 14px;
+  }
+
+  .detail-equipment-title {
+    gap: 10px;
+  }
+
+  .detail-coil-selector {
+    width: 100%;
+    justify-content: flex-start;
+    font-size: 14px;
+  }
+
+  .detail-coil-card {
+    min-height: 190px;
+    padding: 22px 14px 20px;
+  }
+
+  .detail-coil-card h2 {
+    margin-bottom: 28px;
+    font-size: 24px;
+  }
+
+  .detail-lights {
+    gap: 34px;
+  }
+
+  .history-card {
+    min-height: 0;
+    padding: 18px 12px;
+  }
+
+  .history-card h2 {
+    font-size: 24px;
+  }
+
+  .history-table {
+    min-width: 620px;
+    font-size: 13px;
+  }
+
+  .history-table th,
+  .history-table td {
+    padding: 10px;
+  }
+
+  .history-pagination {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .history-pagination button {
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand-left strong {
+    font-size: 19px;
+  }
+
+  .coils-panel h2,
+  .detail-coil-card h2,
+  .history-card h2 {
+    font-size: 21px;
+  }
+
+  .coil-row {
+    grid-template-columns: 74px minmax(0, 1fr);
+  }
+
+  .coil-row strong {
+    font-size: 19px;
+  }
+
+  .light {
+    width: 56px;
+    height: 56px;
   }
 }

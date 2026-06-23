@@ -1,10 +1,29 @@
 const SUPABASE_URL = "https://nursugqypwjcxgooltgo.supabase.co";
 const SUPABASE_KEY = "sb_publishable_6tSi5_on0TrNxfzn8Iue1Q_mdSSOqGo";
 
-const coilStates = [false, false, false];
+const EQUIPO_ID = "ALT-EQ001";
+const coilStates = [null, null, null];
 const lastUpdate = document.getElementById("lastUpdate");
 const connectionDot = document.getElementById("connectionDot");
 const connectionText = document.getElementById("connectionText");
+const clickableCards = document.querySelectorAll("[data-href]");
+
+for (const card of clickableCards) {
+  card.addEventListener("click", (event) => {
+    if (event.target.closest("button")) {
+      return;
+    }
+
+    window.location.href = card.dataset.href;
+  });
+
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      window.location.href = card.dataset.href;
+    }
+  });
+}
 
 function setConnection(state, text) {
   connectionDot.classList.remove("connected", "error");
@@ -22,8 +41,8 @@ function setCoilState(coilId, value) {
   const falseLight = card.querySelector(".false-light");
   const trueLight = card.querySelector(".true-light");
 
-  falseLight.classList.toggle("active", !value);
-  trueLight.classList.toggle("active", value);
+  falseLight.classList.toggle("active", value === false);
+  trueLight.classList.toggle("active", value === true);
 }
 
 function renderCoils() {
@@ -44,6 +63,35 @@ function formatDate(value) {
 }
 
 async function loadLatestStates() {
+  const equipoUrl = new URL(`${SUPABASE_URL}/rest/v1/equipos_plc`);
+  equipoUrl.searchParams.set("select", "estado_equipo");
+  equipoUrl.searchParams.set("id_equipo", `eq.${EQUIPO_ID}`);
+  equipoUrl.searchParams.set("limit", "1");
+
+  const equipoResponse = await fetch(equipoUrl, {
+    headers: {
+      apikey: SUPABASE_KEY
+    }
+  });
+
+  if (!equipoResponse.ok) {
+    throw new Error(await equipoResponse.text());
+  }
+
+  const equipos = await equipoResponse.json();
+  const estadoEquipo = equipos[0]?.estado_equipo ?? "apagado";
+
+  if (estadoEquipo !== "encendido") {
+    for (let i = 0; i < coilStates.length; i++) {
+      coilStates[i] = null;
+    }
+
+    renderCoils();
+    setConnection("error", "DESCONECTADO");
+    lastUpdate.textContent = "Equipo apagado. Mostrando coils en estado neutro.";
+    return;
+  }
+
   const url = new URL(`${SUPABASE_URL}/rest/v1/deteccion_coils`);
   url.searchParams.set("select", "coil_id,estado_actual,fecha_deteccion");
   url.searchParams.set("coil_id", "in.(0,1,2)");

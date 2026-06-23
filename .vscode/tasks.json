@@ -16,13 +16,28 @@
       }
     },
     {
+      "label": "publish PlcReader dotnet",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "publish",
+        "${workspaceFolder}/PlcReader/PlcReader.csproj",
+        "-c",
+        "Release",
+        "--self-contained",
+        "false",
+        "-p:UseAppHost=false",
+        "-o",
+        "${workspaceFolder}/PlcReader/publish-dotnet"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
       "label": "run PlcReader",
       "type": "process",
       "command": "dotnet",
       "args": [
-        "run",
-        "--project",
-        "${workspaceFolder}/PlcReader/PlcReader.csproj"
+        "${workspaceFolder}/PlcReader/publish-dotnet/PlcReader.dll"
       ],
       "problemMatcher": "$msCompile",
       "group": "test"

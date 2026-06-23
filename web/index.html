@@ -9,6 +9,19 @@
 <body>
   <header class="topbar">
     <div class="brand brand-left">
+      <div class="menu-wrap">
+        <button class="menu-button" id="menuButton" type="button" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="menu-dropdown" id="menuDropdown" aria-label="Menu principal">
+          <a href="index.html">Altamira</a>
+          <button type="button">Admin login</button>
+        </nav>
+      </div>
+
       <div class="mark">LC</div>
       <div>
         <span>GRUPO MINERO</span>
@@ -25,17 +38,8 @@
   </header>
 
   <main>
-    <section class="equipment-panel">
-      <div>
-      </div>
-      <div class="connection">
-        <span id="connectionDot" class="status-dot"></span>
-        <strong id="connectionText">CONECTANDO</strong>
-      </div>
-    </section>
-
     <section class="cards-grid" aria-label="Estados de equipos">
-      <article class="coils-panel" aria-label="Estados de coils Caseron 32">
+      <article class="coils-panel clickable-card" aria-label="Estados de coils Caseron 32" role="link" tabindex="0" data-href="caseron32.html">
         <h2>Equipo Caseron 32</h2>
 
         <div class="coil-row" data-coil="0">
@@ -95,6 +99,7 @@
     <p id="lastUpdate" class="last-update">Esperando datos de Supabase...</p>
   </main>
 
+  <script src="menu.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

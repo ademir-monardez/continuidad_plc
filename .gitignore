@@ -2,6 +2,8 @@
 bin/
 obj/
 build-check/
+publish-single/
+publish-dotnet/
 
 # User/local editor files
 .vs/

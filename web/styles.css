@@ -450,6 +450,10 @@ main {
   border-radius: 5px;
 }
 
+.detail-coil-card[hidden] {
+  display: none;
+}
+
 .detail-coil-card h2 {
   margin: 0 0 42px;
   text-align: center;
